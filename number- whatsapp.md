@@ -1,0 +1,1 @@
+https://api.whatsapp.com/send/?phone=5599991157305&text=Ol%C3%A1%21+Tenho+interesse+no+Curso+de+Pilotagem+de+Drones+DJI+em+Presidente+Dutra.&type=phone_number&app_absent=0
