@@ -41,8 +41,10 @@ app.post('/api/create_preference', async (req, res) => {
                 excluded_payment_types: [
                     { id: "credit_card" },
                     { id: "debit_card" },
-                    { id: "ticket" }
-                ]
+                    { id: "ticket" },
+                    { id: "account_money" }
+                ],
+                default_payment_method_id: "pix" // Força o Mercado Pago a abrir direto na tela do PIX universal
             };
         } else if (payment_method === 'credit') {
             body.payment_methods = {
@@ -65,5 +67,18 @@ app.post('/api/create_preference', async (req, res) => {
         res.status(500).json({ error: 'Erro ao criar preferência no Mercado Pago' });
     }
 });
+
+// Serve os arquivos estáticos quando rodando localmente
+const path = require('path');
+app.use(express.static(path.join(__dirname, '../')));
+
+// Permite rodar o servidor localmente com "node api/index.js"
+if (process.env.NODE_ENV !== 'production') {
+    const localPort = process.env.PORT || 3000;
+    app.listen(localPort, () => {
+        console.log(`🚀 Servidor rodando localmente na porta ${localPort}`);
+        console.log(`👉 Acesse: http://localhost:${localPort}/checkout.html`);
+    });
+}
 
 module.exports = app;
