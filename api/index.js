@@ -1,7 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
-const { MercadoPagoConfig, Preference } = require('mercadopago');
+const { MercadoPagoConfig, Payment } = require('mercadopago');
 
 const app = express();
 
@@ -17,54 +17,124 @@ if (!process.env.MERCADOPAGO_ACCESS_TOKEN) {
 // Configura as credenciais do Mercado Pago
 const client = new MercadoPagoConfig({ accessToken: process.env.MERCADOPAGO_ACCESS_TOKEN });
 
-// Rota para criar a preferência
-app.post('/api/create_preference', async (req, res) => {
+// Rota unificada para processar o pagamento transparente
+app.post('/api/process_payment', async (req, res) => {
     try {
-        const { title, quantity, price, payer_email, payment_method } = req.body;
+        const { title, price, payer_email, payer_cpf, payment_method, formData } = req.body;
 
-        const body = {
-            items: [
-                {
-                    title: title || 'Curso de Pilotagem de Drones DJI',
-                    quantity: Number(quantity) || 1,
-                    unit_price: Number(price) || 10.00,
-                    currency_id: 'BRL',
-                }
-            ],
-            payer: {
-                email: payer_email || 'test_user@testuser.com'
-            }
-        };
+        const payment = new Payment(client);
 
         if (payment_method === 'pix') {
-            body.payment_methods = {
-                excluded_payment_types: [
-                    { id: "credit_card" },
-                    { id: "debit_card" },
-                    { id: "ticket" },
-                    { id: "account_money" }
-                ],
-                default_payment_method_id: "pix" // Força o Mercado Pago a abrir direto na tela do PIX universal
-            };
-        } else if (payment_method === 'credit') {
-            body.payment_methods = {
-                excluded_payment_types: [
-                    { id: "ticket" },
-                    { id: "bank_transfer" }
-                ]
-            };
+            // Fluxo PIX NATIVO via v1/orders
+            const crypto = require('crypto');
+            const idempotencyKey = crypto.randomUUID();
+
+            const response = await fetch('https://api.mercadopago.com/v1/orders', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${process.env.MERCADOPAGO_ACCESS_TOKEN}`,
+                    'X-Idempotency-Key': idempotencyKey
+                },
+                body: JSON.stringify({
+                    type: "online",
+                    external_reference: "curso_dji_" + Date.now(),
+                    total_amount: (Number(price) || 1.50).toFixed(2),
+                    payer: {
+                        email: payer_email,
+                        first_name: "Comprador", 
+                        identification: {
+                            type: 'CPF',
+                            number: payer_cpf || '19119119100'
+                        }
+                    },
+                    transactions: {
+                        payments: [
+                            {
+                                amount: (Number(price) || 1.50).toFixed(2),
+                                payment_method: {
+                                    id: "pix",
+                                    type: "bank_transfer"
+                                }
+                            }
+                        ]
+                    }
+                })
+            });
+
+            const result = await response.json();
+
+            if (!response.ok) {
+                console.error("Erro MP Orders:", JSON.stringify(result, null, 2));
+                return res.status(response.status).json(result);
+            }
+
+            // Log para ver a estrutura de sucesso
+            console.log("SUCESSO MP Orders:", JSON.stringify(result, null, 2));
+
+            // O retorno da API v1/orders é um pouco diferente
+            const pixPayment = result.transactions?.payments?.[0];
+
+            res.json({
+                status: result.status,
+                id: result.id, // O Order ID que o Mercado Pago exige no painel!
+                qr_code_base64: pixPayment?.payment_method?.qr_code_base64,
+                qr_code: pixPayment?.payment_method?.qr_code
+            });
+        } else if (formData) {
+            // Fluxo CARTÃO DE CRÉDITO via v1/orders
+            const crypto = require('crypto');
+            
+            const response = await fetch('https://api.mercadopago.com/v1/orders', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${process.env.MERCADOPAGO_ACCESS_TOKEN}`,
+                    'X-Idempotency-Key': crypto.randomUUID()
+                },
+                body: JSON.stringify({
+                    type: "online",
+                    external_reference: "curso_dji_cc_" + Date.now(),
+                    total_amount: (Number(formData.transaction_amount) || 1.50).toFixed(2),
+                    payer: {
+                        email: formData.payer?.email,
+                        first_name: "Comprador",
+                        identification: formData.payer?.identification
+                    },
+                    transactions: {
+                        payments: [
+                            {
+                                amount: (Number(formData.transaction_amount) || 1.50).toFixed(2),
+                                payment_method: {
+                                    id: formData.payment_method_id,
+                                    type: "credit_card",
+                                    token: formData.token,
+                                    installments: formData.installments || 1
+                                }
+                            }
+                        ]
+                    }
+                })
+            });
+
+            const result = await response.json();
+
+            if (!response.ok) {
+                console.error("Erro MP Orders (Cartão):", JSON.stringify(result, null, 2));
+                return res.status(response.status).json(result);
+            }
+
+            res.json({
+                status: result.status,
+                id: result.id
+            });
+        } else {
+            res.status(400).json({ error: 'Método de pagamento não suportado ou dados incompletos.' });
         }
 
-        const preference = new Preference(client);
-        const result = await preference.create({ body });
-        
-        res.json({
-            id: result.id,
-            init_point: result.init_point
-        });
     } catch (error) {
-        console.error("Erro ao criar preferência:", error);
-        res.status(500).json({ error: 'Erro ao criar preferência no Mercado Pago' });
+        console.error("Erro ao processar pagamento:", error);
+        res.status(500).json({ error: 'Erro interno ao processar pagamento.' });
     }
 });
 
