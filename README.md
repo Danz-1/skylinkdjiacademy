@@ -1,14 +1,15 @@
-# MVP Checkout Curso de Drones DJI - Integração Mercado Pago
+# Produto Antigravidade - Plataforma de Vendas White-Label
 
-Este projeto é um Produto Mínimo Viável (MVP) contendo uma Landing Page (`index.html`), uma página de Checkout (`checkout.html`) e um Servidor Backend Node.js (`server.js`) integrado ao Mercado Pago (Checkout Pro / API de Preferências).
+Este projeto é uma plataforma de vendas (Landing Page e Checkout) construída como um Produto Mínimo Viável (MVP) White-Label. Para fins de demonstração, o produto configurado atualmente é **"1 grama de Antigravidade"**.
+
+O projeto conta com um front-end hiper-moderno em estilo **Glassmorphism**, uma Landing Page (`index.html`), uma página de Checkout (`checkout.html`) com formulário translúcido, e um Servidor Backend Node.js (`server.js`) integrado ao Mercado Pago.
 
 ## Configuração Inicial Obrigatória (Credenciais do Mercado Pago)
 
 Antes de rodar o projeto, você precisa configurar seu **Access Token** do Mercado Pago:
 
-1. Na pasta do projeto, encontre o arquivo **`.env.example`**.
-2. Renomeie ele para **apenas `.env`** (sem o `.example`).
-3. Abra o arquivo `.env` e cole o seu **Access Token** do Mercado Pago no lugar correspondente:
+1. Na pasta do projeto, encontre o arquivo **`.env.example`** (ou crie um arquivo `.env` direto).
+2. Abra o arquivo `.env` e cole o seu **Access Token** do Mercado Pago no lugar correspondente:
 
 ```env
 MERCADOPAGO_ACCESS_TOKEN=APP_USR-seu-token-aqui
@@ -56,15 +57,16 @@ npm start
 Com o servidor rodando (seja via Docker ou Node.js nativo), abra seu navegador e acesse:
 👉 **[http://localhost:3000/index.html](http://localhost:3000/index.html)**
 
-- Clique em **"GARANTIR MINHA VAGA AGORA"** para ir ao Checkout.
-- Preencha os dados de teste.
-- Clique em **"IR PARA PAGAMENTO"**.
-- O sistema vai chamar o backend, criar a preferência e redirecionar para a tela do Mercado Pago.
+- Você verá a Landing Page hiper-moderna (Glassmorphism) vendendo **1 grama de Antigravidade**.
+- Clique no botão de CTA para ir ao Checkout.
+- Preencha os dados de teste na interface translúcida.
+- O sistema processará o pagamento (simulado via SDK/API do Mercado Pago).
 
 ## Estrutura de Arquivos
 
-- `index.html`: Landing Page.
+- `index.html`: Landing Page (Tema White-Label / Glassmorphism).
 - `checkout.html`: Formulário e resumo de pagamento.
+- `sucesso.html`: Tela de confirmação pós-compra.
 - `server.js`: API Backend em Express integrado ao Mercado Pago.
 - `Dockerfile` e `docker-compose.yml`: Arquivos de configuração do Docker.
-- `.env`: Arquivo (que você criará a partir do `.env.example`) com suas chaves de segurança.
+- `.env`: Arquivo com suas chaves de segurança.

@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sua Empresa - Finalizar Inscrição</title>
+    <title>Antigravidade Corp - Finalizar Compra</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -122,9 +122,9 @@
             <div class="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center border border-white/20 backdrop-blur-sm">
                 <i class="fa-solid fa-cube text-white text-xl"></i>
             </div>
-            <span class="text-white font-bold text-xl tracking-wide uppercase">SUA EMPRESA</span>
+            <span class="text-white font-bold text-xl tracking-wide uppercase">ANTIGRAVIDADE CORP</span>
         </div>
-        <p class="text-gray-400 text-sm uppercase tracking-widest font-bold mt-1">Finalize sua inscrição de forma segura
+        <p class="text-gray-400 text-sm uppercase tracking-widest font-bold mt-1">Sua matéria exótica com entrega segura
         </p>
     </header>
 
@@ -166,8 +166,8 @@
                     </h2>
                     <div class="flex justify-between items-center mb-6">
                         <div>
-                            <h3 class="font-bold text-lg text-white">Treinamento Profissionalizante</h3>
-                            <p class="text-xs text-gray-500 mt-1">Acesso Imediato</p>
+                            <h3 class="font-bold text-lg text-white">1 Grama de Antigravidade Estável</h3>
+                            <p class="text-xs text-gray-500 mt-1">Contenção Magnética Inclusa</p>
                         </div>
                         <span class="font-bold text-xl text-white">R$ 1,50</span>
                     </div>
@@ -226,7 +226,7 @@
             <i class="fa-brands fa-pix text-4xl text-white mb-4"></i>
             <h3 class="text-2xl font-bold text-white mb-2">Pague com PIX</h3>
             <p class="text-gray-400 text-sm mb-6">Escaneie o código abaixo com o aplicativo do seu banco para confirmar
-                sua inscrição.</p>
+                a compra do seu lote.</p>
 
             <div class="bg-white p-4 rounded-2xl inline-block mb-6 shadow-[0_0_20px_rgba(255,255,255,0.1)]">
                 <img id="qrCodeImg" src="" alt="QR Code Pix" class="w-48 h-48 object-contain">
@@ -297,7 +297,7 @@
                                 method: "POST",
                                 headers: { "Content-Type": "application/json" },
                                 body: JSON.stringify({
-                                    title: 'Curso Profissionalizante',
+                                    title: '1 Grama de Antigravidade',
                                     price: 1.50,
                                     payment_method: 'credit',
                                     formData: formData
@@ -349,7 +349,7 @@
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({
-                            title: 'Curso Profissionalizante',
+                            title: '1 Grama de Antigravidade',
                             price: 1.50,
                             payer_email: payer_email,
                             payer_cpf: payer_cpf,
