@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pagamento Confirmado - DJI Academy</title>
+    <title>Sua Empresa - Pagamento Confirmado</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -11,68 +11,161 @@
             theme: {
                 extend: {
                     colors: {
-                        'neon-green': '#00FF00',
-                        'neon-green-dark': '#00cc00',
+                        'primary-dark': '#0a0a0a',
+                        'primary-gray': '#1f2937',
+                        'primary-light': '#f3f4f6',
+                        'accent-white': '#ffffff',
                     }
                 }
             }
         }
     </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #111827; /* gray-900 */
-            color: #f3f4f6; /* gray-100 */
+            background-color: #0a0a0a;
+            color: #f3f4f6;
+            /* Abstract modern background pattern */
+            background-image: 
+                radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.05) 0%, transparent 70%);
+            background-attachment: fixed;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            overflow: hidden;
         }
-        .neon-text {
-            text-shadow: 0 0 10px rgba(0, 255, 0, 0.7);
+
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+            border-radius: 2rem;
         }
-        .neon-button {
-            box-shadow: 0 0 15px rgba(0, 255, 0, 0.5);
+
+        .premium-button {
+            background: rgba(255, 255, 255, 0.9);
+            color: #0a0a0a;
+            box-shadow: 0 4px 15px rgba(255, 255, 255, 0.2);
             transition: all 0.3s ease;
         }
-        .neon-button:hover {
-            box-shadow: 0 0 25px rgba(0, 255, 0, 0.8);
+
+        .premium-button:hover {
             transform: translateY(-2px);
+            background: #ffffff;
+            box-shadow: 0 8px 25px rgba(255, 255, 255, 0.3);
+        }
+
+        .success-icon-container {
+            width: 100px;
+            height: 100px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            box-shadow: 0 0 30px rgba(255, 255, 255, 0.1);
+            animation: pulse-glow 2s infinite alternate;
+        }
+
+        @keyframes pulse-glow {
+            0% { box-shadow: 0 0 20px rgba(255, 255, 255, 0.05); }
+            100% { box-shadow: 0 0 40px rgba(255, 255, 255, 0.2); }
+        }
+
+        /* Particles effect background */
+        .particles {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1;
+            overflow: hidden;
+            pointer-events: none;
+        }
+        .particle {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 50%;
+            animation: float 10s infinite ease-in-out;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0) translateX(0); opacity: 0; }
+            50% { opacity: 1; }
+            100% { transform: translateY(-100vh) translateX(20px); opacity: 0; }
         }
     </style>
 </head>
-<body class="antialiased min-h-screen flex items-center justify-center p-4">
+<body class="antialiased p-4">
 
-    <div class="max-w-xl w-full bg-gray-800 p-8 rounded-2xl border border-gray-700 text-center shadow-2xl relative overflow-hidden">
+    <!-- Particles Background -->
+    <div class="particles" id="particles"></div>
+
+    <div class="max-w-xl w-full glass-panel p-10 text-center relative z-10">
         
-        <!-- Fundo decorativo sutil -->
-        <div class="absolute top-0 left-1/2 transform -translate-x-1/2 w-full h-full overflow-hidden pointer-events-none opacity-10">
-            <div class="absolute -top-10 left-1/4 w-64 h-64 bg-neon-green rounded-full filter blur-3xl"></div>
+        <div class="success-icon-container">
+            <i class="fa-solid fa-check text-4xl text-white"></i>
+        </div>
+        
+        <h1 class="text-3xl font-black text-white mb-3 uppercase tracking-tight">Inscrição Confirmada!</h1>
+        <p class="text-gray-400 mb-8 text-base leading-relaxed">
+            Parabéns! Sua vaga no <strong class="text-white">Treinamento Profissionalizante</strong> está garantida. Estamos muito felizes em ter você na nossa próxima turma.
+        </p>
+        
+        <div class="bg-black/30 rounded-2xl p-6 mb-8 border border-white/10 text-left">
+            <h3 class="font-bold text-white mb-4 flex items-center">
+                <i class="fa-solid fa-circle-exclamation text-gray-300 mr-2"></i> Próximos Passos:
+            </h3>
+            <ul class="text-gray-400 text-sm space-y-4">
+                <li class="flex items-start">
+                    <span class="w-6 h-6 rounded-full bg-white/10 flex items-center justify-center text-xs text-white mr-3 shrink-0">1</span>
+                    O recibo detalhado da sua compra foi enviado para o seu e-mail cadastrado.
+                </li>
+                <li class="flex items-start">
+                    <span class="w-6 h-6 rounded-full bg-white/10 flex items-center justify-center text-xs text-white mr-3 shrink-0">2</span>
+                    Entre no nosso Grupo VIP no WhatsApp para receber o material didático e cronograma oficial.
+                </li>
+            </ul>
         </div>
 
-        <div class="relative z-10">
-            <div class="w-24 h-24 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-6 text-neon-green text-5xl">
-                <i class="fa-solid fa-check"></i>
-            </div>
-            
-            <h1 class="text-3xl font-bold text-white mb-2">Pedido Recebido!</h1>
-            <p class="text-gray-400 mb-8 text-lg">Parabéns pela sua inscrição no <strong class="text-white">Curso de Pilotagem de Drones DJI</strong>. Estamos muito felizes em ter você na turma.</p>
-            
-            <div class="bg-gray-900 rounded-lg p-6 mb-8 border border-gray-700 text-left">
-                <h3 class="font-medium text-white mb-2"><i class="fa-solid fa-circle-exclamation text-neon-green mr-2"></i> Próximos Passos:</h3>
-                <ul class="text-gray-400 text-sm space-y-2">
-                    <li>1. O recibo da sua compra foi enviado para o seu e-mail.</li>
-                    <li>2. Você precisa entrar no nosso Grupo VIP no WhatsApp para receber o material didático.</li>
-                </ul>
-            </div>
-
-            <a href="https://api.whatsapp.com/send/?phone=5599991157305&text=Ol%C3%A1%21+Acabei+de+pagar+o+Curso+de+Pilotagem+de+Drones+DJI+em+Presidente+Dutra+e+quero+entrar+no+grupo.&type=phone_number&app_absent=0" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center w-full px-6 py-4 border border-transparent text-lg font-bold rounded-lg text-black bg-neon-green hover:bg-neon-green-dark neon-button">
-                <i class="fa-brands fa-whatsapp text-2xl mr-3"></i>
-                ENTRAR NO GRUPO DE ALUNOS
-            </a>
-            
-            <div class="mt-6">
-                <a href="index.html" class="text-sm text-gray-500 hover:text-white transition">Voltar para a página inicial</a>
-            </div>
+        <a href="#" class="inline-flex items-center justify-center w-full px-6 py-4 border border-transparent text-lg font-bold rounded-xl premium-button">
+            <i class="fa-brands fa-whatsapp text-2xl mr-3"></i>
+            ENTRAR NO GRUPO DE ALUNOS
+        </a>
+        
+        <div class="mt-8">
+            <a href="index.html" class="text-sm font-medium text-gray-500 hover:text-white transition-colors">Voltar para a página inicial</a>
         </div>
     </div>
 
+    <!-- Script to generate background particles -->
+    <script>
+        const particlesContainer = document.getElementById('particles');
+        for (let i = 0; i < 20; i++) {
+            const particle = document.createElement('div');
+            particle.classList.add('particle');
+            
+            // Random properties
+            const size = Math.random() * 5 + 2;
+            const left = Math.random() * 100;
+            const duration = Math.random() * 10 + 10;
+            const delay = Math.random() * 5;
+            
+            particle.style.width = `${size}px`;
+            particle.style.height = `${size}px`;
+            particle.style.left = `${left}vw`;
+            particle.style.bottom = `-10px`;
+            particle.style.animationDuration = `${duration}s`;
+            particle.style.animationDelay = `${delay}s`;
+            
+            particlesContainer.appendChild(particle);
+        }
+    </script>
 </body>
 </html>
